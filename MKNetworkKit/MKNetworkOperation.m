@@ -1252,6 +1252,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   
   for(MKNKResponseBlock responseBlock in self.responseBlocks)
     responseBlock(self);
+    
+  // Fix memory leak in blocks
+  [self.responseBlocks removeAllObjects];
+  [self.errorBlocks removeAllObjects];
 }
 
 -(void) showLocalNotification {
@@ -1284,7 +1288,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
     [self showLocalNotification];
 #endif
-  
+
+  // Fix memory leak in blocks
+  [self.responseBlocks removeAllObjects];
+  [self.errorBlocks removeAllObjects];
 }
 
 @end
